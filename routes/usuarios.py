@@ -7,12 +7,21 @@ from utilidades.seguranca import get_password_hash, get_current_user
 
 
 # Router
-router = APIRouter()
+router = APIRouter(tags=["usuários"])
 
 
 # Rota para criar um novo usuário
-@router.post("/usuarios/", response_model=UsuarioResponse)
+@router.post("/usuarios/", response_model=UsuarioResponse, summary="Criar novo usuário")
 async def create_user(usuario: UsuarioCreate, db: Session = Depends(get_session)):
+    """
+    Cria um novo usuário no sistema.
+    
+    - **nome**: Nome do usuário
+    - **email**: Email do usuário (deve ser único)
+    - **senha**: Senha do usuário (mín. 8 caracteres, com maiúscula, número e símbolo)
+    
+    Retorna os dados do usuário criado, sem a senha.
+    """
     # Criar novo objeto Usuario para o banco de dados
     usuario_db = Usuario(
         nome=usuario.nome,
@@ -34,6 +43,11 @@ async def create_user(usuario: UsuarioCreate, db: Session = Depends(get_session)
 
 
 # Rota para obter o usuário atual
-@router.get("/usuarios/me/", response_model=Usuario)
+@router.get("/usuarios/me/", response_model=UsuarioResponse, summary="Obter dados do usuário atual")
 async def read_users_me(current_user: Usuario = Depends(get_current_user)):
+    """
+    Retorna os dados do usuário atualmente autenticado.
+    
+    Requer autenticação via token Bearer JWT.
+    """
     return current_user

@@ -2,6 +2,7 @@ from sqlmodel import SQLModel, Field
 from typing_extensions import Annotated
 from pydantic import field_validator, EmailStr
 import re
+from datetime import datetime
 
 
 # Modelo base com campos comuns
@@ -37,9 +38,13 @@ class UsuarioCreate(UsuarioBase):
 class Usuario(UsuarioBase, table=True):
     id: Annotated[int | None, Field(default=None, primary_key=True)]
     senha_hash: str  # Senha com hash armazenada no banco
+    created_at: datetime = Field(default_factory=datetime.utcnow)
+    updated_at: datetime = Field(default_factory=datetime.utcnow, sa_column_kwargs={"onupdate": datetime.utcnow})
 
 
 # Modelo para resposta (saída da API)
 class UsuarioResponse(UsuarioBase):
     id: int
+    created_at: datetime
+    updated_at: datetime
     # Sem campo de senha aqui!

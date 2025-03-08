@@ -1,11 +1,8 @@
-from sqlmodel import SQLModel, Field, Relationship
-from typing_extensions import Annotated
-from .usuario import Usuario
+from sqlmodel import Field
+from .base_model import BaseModel
 
 
-class Concurso(SQLModel, table=True):
+class Concurso(BaseModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     nome: str
     descricao: str | None = None
-    usuario_id: Annotated[int, Field(foreign_key="usuario.id")]
-    usuario: Usuario | None = Relationship(back_populates="concursos")
