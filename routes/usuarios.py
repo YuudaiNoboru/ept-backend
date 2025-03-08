@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.exc import IntegrityError
 from sqlmodel import Session
 from utilidades.database import get_session
 from model.usuario import Usuario, UsuarioResponse, UsuarioCreate
@@ -18,10 +19,18 @@ async def create_user(usuario: UsuarioCreate, db: Session = Depends(get_session)
         email=usuario.email,
         senha_hash=get_password_hash(usuario.senha)
     )
-    db.add(usuario_db)
-    db.commit()
-    db.refresh(usuario_db)
-    return usuario_db  # SQLModel automaticamente converte para UsuarioResponse
+    
+    try:
+        db.add(usuario_db)
+        db.commit()
+        db.refresh(usuario_db)
+        return usuario_db  # SQLModel automaticamente converte para UsuarioResponse
+    except IntegrityError:
+        db.rollback()
+        raise HTTPException(
+            status_code=400,
+            detail="Um usuário com este email já existe."
+        )
 
 
 # Rota para obter o usuário atual
