@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plataforma de Estudos</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+        
+        nav button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 8px 16px;
+            margin-left: 15px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+        
+        nav button:hover {
+            background: rgba(255,255,255,0.1);
+        }
+        
+        .panel {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 30px;
+            margin: 20px 0;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        input, textarea, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        
+        button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s;
+        }
+        
+        button:hover {
+            background: #5a6fd8;
+        }
+        
+        button.secondary {
+            background: #6c757d;
+        }
+        
+        button.secondary:hover {
+            background: #5a6268;
+        }
+        
+        button.danger {
+            background: #dc3545;
+        }
+        
+        button.danger:hover {
+            background: #c82333;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .subjects-list {
+            margin-top: 20px;
+        }
+        
+        .subject-item {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+            margin-bottom: 10px;
+        }
+        
+        .subject-actions {
+            margin-top: 10px;
+        }
+        
+        .subject-actions button {
+            margin-right: 5px;
+            margin-bottom: 5px;
+            padding: 6px 12px;
+            font-size: 14px;
+        }
+        
+        .status-message {
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .login-section, .register-section, .dashboard-section {
+            max-width: 500px;
+            margin: 40px auto;
+        }
+        
+        .welcome-message {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .logout-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+        }
+        
+        .logout-btn:hover {
+            background: #c82333;
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav {
+                margin-top: 15px;
+            }
+            
+            nav button {
+                display: block;
+                margin: 5px auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-content">
+            <h1>Plataforma de Estudos</h1>
+            <nav>
+                <button id="showLoginBtn">Login</button>
+                <button id="showRegisterBtn">Registrar</button>
+                <button id="showDashboardBtn" class="hidden">Dashboard</button>
+                <button id="logoutBtn" class="hidden logout-btn">Sair</button>
+            </nav>
+        </div>
+    </header>
+    
+    <div class="container">
+        <!-- Login Section -->
+        <section id="loginSection" class="login-section panel">
+            <h2>Login</h2>
+            <div id="loginMessage"></div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Email:</label>
+                    <input type="email" id="loginEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Senha:</label>
+                    <input type="password" id="loginPassword" required>
+                </div>
+                <button type="submit">Entrar</button>
+            </form>
+        </section>
+        
+        <!-- Register Section -->
+        <section id="registerSection" class="register-section panel hidden">
+            <h2>Criar Conta</h2>
+            <div id="registerMessage"></div>
+            <form id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Nome:</label>
+                    <input type="text" id="registerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email:</label>
+                    <input type="email" id="registerEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Senha (mín. 8 caracteres, com maiúscula, número e símbolo):</label>
+                    <input type="password" id="registerPassword" required>
+                </div>
+                <button type="submit">Registrar</button>
+            </form>
+        </section>
+        
+        <!-- Dashboard Section -->
+        <section id="dashboardSection" class="dashboard-section hidden">
+            <div class="welcome-message">
+                <h2>Bem-vindo, <span id="userName"></span>!</h2>
+                <p>Gerencie seus assuntos de estudo</p>
+            </div>
+            
+            <div id="dashboardMessage"></div>
+            
+            <!-- Add Subject Form -->
+            <div class="panel">
+                <h3>Adicionar Novo Assunto</h3>
+                <form id="addSubjectForm">
+                    <div class="form-group">
+                        <label for="subjectName">Nome:</label>
+                        <input type="text" id="subjectName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectDescription">Descrição:</label>
+                        <textarea id="subjectDescription" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="subjectParent">Assunto Pai (opcional):</label>
+                        <select id="subjectParent">
+                            <option value="">Nenhum (assunto raiz)</option>
+                            <!-- Options will be populated dynamically -->
+                        </select>
+                    </div>
+                    <button type="submit">Adicionar Assunto</button>
+                </form>
+            </div>
+            
+            <!-- Subjects List -->
+            <div class="panel">
+                <h3>Meus Assuntos</h3>
+                <div id="subjectsList" class="subjects-list">
+                    <!-- Subjects will be loaded here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // API base URL
+        const API_BASE_URL = '/api';
+        
+        // Store the authentication token
+        let authToken = localStorage.getItem('authToken');
+        let currentUser = null;
+        
+        // DOM Elements
+        const loginSection = document.getElementById('loginSection');
+        const registerSection = document.getElementById('registerSection');
+        const dashboardSection = document.getElementById('dashboardSection');
+        const showLoginBtn = document.getElementById('showLoginBtn');
+        const showRegisterBtn = document.getElementById('showRegisterBtn');
+        const showDashboardBtn = document.getElementById('showDashboardBtn');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const loginForm = document.getElementById('loginForm');
+        const registerForm = document.getElementById('registerForm');
+        const addSubjectForm = document.getElementById('addSubjectForm');
+        const userNameSpan = document.getElementById('userName');
+        const subjectsList = document.getElementById('subjectsList');
+        const subjectParentSelect = document.getElementById('subjectParent');
+        
+        // Initialize the app
+        function initApp() {
+            setupEventListeners();
+            updateUI();
+            
+            // If user is logged in, load dashboard
+            if (authToken) {
+                loadCurrentUser();
+                loadSubjects();
+            }
+        }
+        
+        // Set up event listeners
+        function setupEventListeners() {
+            showLoginBtn.addEventListener('click', () => showSection('login'));
+            showRegisterBtn.addEventListener('click', () => showSection('register'));
+            showDashboardBtn.addEventListener('click', () => showSection('dashboard'));
+            logoutBtn.addEventListener('click', logout);
+            
+            loginForm.addEventListener('submit', handleLogin);
+            registerForm.addEventListener('submit', handleRegister);
+            addSubjectForm.addEventListener('submit', handleAddSubject);
+        }
+        
+        // Update UI based on auth state
+        function updateUI() {
+            if (authToken) {
+                showLoginBtn.classList.add('hidden');
+                showRegisterBtn.classList.add('hidden');
+                showDashboardBtn.classList.remove('hidden');
+                logoutBtn.classList.remove('hidden');
+            } else {
+                showLoginBtn.classList.remove('hidden');
+                showRegisterBtn.classList.remove('hidden');
+                showDashboardBtn.classList.add('hidden');
+                logoutBtn.classList.add('hidden');
+            }
+        }
+        
+        // Show specific section
+        function showSection(section) {
+            loginSection.classList.add('hidden');
+            registerSection.classList.add('hidden');
+            dashboardSection.classList.add('hidden');
+            
+            if (section === 'login') {
+                loginSection.classList.remove('hidden');
+            } else if (section === 'register') {
+                registerSection.classList.remove('hidden');
+            } else if (section === 'dashboard') {
+                dashboardSection.classList.remove('hidden');
+            }
+        }
+        
+        // Handle login
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/token`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: `username=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    authToken = data.access_token;
+                    localStorage.setItem('authToken', authToken);
+                    clearMessages();
+                    
+                    loadCurrentUser();
+                    loadSubjects();
+                    showSection('dashboard');
+                    updateUI();
+                } else {
+                    showMessage('loginMessage', data.detail || 'Erro ao fazer login', 'error');
+                }
+            } catch (error) {
+                showMessage('loginMessage', 'Erro de conexão com o servidor', 'error');
+            }
+        }
+        
+        // Handle registration
+        async function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('registerName').value;
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/usuarios/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ nome: name, email: email, senha: password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    showMessage('registerMessage', 'Conta criada com sucesso! Faça login.', 'success');
+                    document.getElementById('registerForm').reset();
+                    showSection('login');
+                } else {
+                    showMessage('registerMessage', data.detail || 'Erro ao registrar', 'error');
+                }
+            } catch (error) {
+                showMessage('registerMessage', 'Erro de conexão com o servidor', 'error');
+            }
+        }
+        
+        // Load current user info
+        async function loadCurrentUser() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/usuarios/me/`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const user = await response.json();
+                    currentUser = user;
+                    userNameSpan.textContent = user.nome;
+                } else {
+                    // Token might be expired, log out user
+                    logout();
+                }
+            } catch (error) {
+                console.error('Error loading user:', error);
+            }
+        }
+        
+        // Load subjects
+        async function loadSubjects() {
+            try {
+                const response = await fetch('/assuntos/', {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                if (response.ok) {
+                    const subjects = await response.json();
+                    renderSubjects(subjects);
+                    populateParentSelect(subjects);
+                }
+            } catch (error) {
+                console.error('Error loading subjects:', error);
+            }
+        }
+        
+        // Render subjects list
+        function renderSubjects(subjects) {
+            if (subjects.length === 0) {
+                subjectsList.innerHTML = '<p>Nenhum assunto cadastrado ainda.</p>';
+                return;
+            }
+            
+            // Group subjects by level for better organization
+            const rootSubjects = subjects.filter(s => !s.pai_id);
+            
+            subjectsList.innerHTML = '';
+            
+            rootSubjects.forEach(subject => {
+                const subjectElement = createSubjectElement(subject, subjects);
+                subjectsList.appendChild(subjectElement);
+            });
+        }
+        
+        // Create subject element with children
+        function createSubjectElement(subject, allSubjects) {
+            const div = document.createElement('div');
+            div.className = 'subject-item';
+            
+            div.innerHTML = `
+                <h4>${subject.nome}</h4>
+                <p>${subject.descricao || 'Sem descrição'}</p>
+                <div class="subject-actions">
+                    <button onclick="editSubject(${subject.id})" class="secondary">Editar</button>
+                    <button onclick="deleteSubject(${subject.id})" class="danger">Excluir</button>
+                </div>
+            `;
+            
+            // Add children if they exist
+            const children = allSubjects.filter(s => s.pai_id === subject.id);
+            if (children.length > 0) {
+                const childrenDiv = document.createElement('div');
+                childrenDiv.style.marginLeft = '20px';
+                childrenDiv.style.borderLeft = '2px solid #eee';
+                childrenDiv.style.paddingLeft = '15px';
+                
+                children.forEach(child => {
+                    const childElement = createSubjectElement(child, allSubjects);
+                    childrenDiv.appendChild(childElement);
+                });
+                
+                div.appendChild(childrenDiv);
+            }
+            
+            return div;
+        }
+        
+        // Populate parent select dropdown
+        function populateParentSelect(subjects) {
+            // Clear existing options except the first one
+            subjectParentSelect.innerHTML = '<option value="">Nenhum (assunto raiz)</option>';
+            
+            // Add all subjects as options
+            subjects.forEach(subject => {
+                const option = document.createElement('option');
+                option.value = subject.id;
+                option.textContent = subject.nome;
+                subjectParentSelect.appendChild(option);
+            });
+        }
+        
+        // Handle adding a new subject
+        async function handleAddSubject(e) {
+            e.preventDefault();
+            const name = document.getElementById('subjectName').value;
+            const description = document.getElementById('subjectDescription').value;
+            const parentId = document.getElementById('subjectParent').value || null;
+            
+            try {
+                const response = await fetch('/assuntos/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({
+                        nome: name,
+                        descricao: description,
+                        pai_id: parentId ? parseInt(parentId) : null
+                    })
+                });
+                
+                if (response.ok) {
+                    clearMessages();
+                    document.getElementById('addSubjectForm').reset();
+                    loadSubjects(); // Reload the list
+                } else {
+                    const errorData = await response.json();
+                    showMessage('dashboardMessage', errorData.detail || 'Erro ao adicionar assunto', 'error');
+                }
+            } catch (error) {
+                showMessage('dashboardMessage', 'Erro de conexão com o servidor', 'error');
+            }
+        }
+        
+        // Edit subject (placeholder function)
+        window.editSubject = function(subjectId) {
+            alert(`Função de edição para o assunto ID: ${subjectId}`);
+            // In a real implementation, you would open an edit modal/form
+        };
+        
+        // Delete subject
+        window.deleteSubject = async function(subjectId) {
+            if (!confirm('Tem certeza que deseja excluir este assunto?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/assuntos/${subjectId}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                if (response.ok) {
+                    loadSubjects(); // Reload the list
+                } else {
+                    const errorData = await response.json();
+                    showMessage('dashboardMessage', errorData.detail || 'Erro ao excluir assunto', 'error');
+                }
+            } catch (error) {
+                showMessage('dashboardMessage', 'Erro de conexão com o servidor', 'error');
+            }
+        };
+        
+        // Logout
+        function logout() {
+            authToken = null;
+            currentUser = null;
+            localStorage.removeItem('authToken');
+            showSection('login');
+            updateUI();
+            clearMessages();
+        }
+        
+        // Show message in specific element
+        function showMessage(elementId, message, type) {
+            const element = document.getElementById(elementId);
+            element.innerHTML = `<div class="status-message ${type}">${message}</div>`;
+        }
+        
+        // Clear all messages
+        function clearMessages() {
+            document.querySelectorAll('.status-message').forEach(el => el.remove());
+        }
+        
+        // Initialize the app when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initApp);
+    </script>
+</body>
+</html>

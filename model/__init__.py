@@ -8,6 +8,7 @@ from .token import Token
 from .anotacao import Anotacao
 from .tipo_anotacao import TipoAnotacao
 from .concurso import Concurso
+from .split import Split, SplitAssunto
 
 __all__ = [
     "Usuario",
@@ -19,5 +20,7 @@ __all__ = [
     "Token",
     "Anotacao",
     "TipoAnotacao",
-    "Concurso"
+    "Concurso",
+    "Split",
+    "SplitAssunto"
 ]

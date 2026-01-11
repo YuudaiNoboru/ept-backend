@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from utilidades.database import criar_tabelas
 from routes.usuarios import router as usuario_router
 from routes.token import router as token_router
@@ -24,6 +25,9 @@ app.add_middleware(
 @app.on_event("startup")
 def on_startup():
     criar_tabelas()
+
+# Serve arquivos estáticos (HTML, CSS, JS)
+app.mount("/", StaticFiles(directory="/workspace", html=True), name="static")
 
 # Integração das rotas
 app.include_router(usuario_router, prefix="/api")
