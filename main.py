@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from utilidades.database import criar_tabelas
 from routes.usuarios import router as usuario_router
 from routes.token import router as token_router
+from routes.assuntos import router as assunto_router
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.openapi.docs import get_swagger_ui_html
 from fastapi.openapi.utils import get_openapi
@@ -27,6 +28,7 @@ def on_startup():
 # Integração das rotas
 app.include_router(usuario_router, prefix="/api")
 app.include_router(token_router, prefix="/api")
+app.include_router(assunto_router)
 
 # Configuração do OAuth2 para o Swagger
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/token")
