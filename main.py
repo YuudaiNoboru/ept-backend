@@ -27,7 +27,7 @@ def on_startup():
     criar_tabelas()
 
 # Serve arquivos estáticos (HTML, CSS, JS)
-app.mount("/", StaticFiles(directory="/workspace", html=True), name="static")
+app.mount("/", StaticFiles(directory=".", html=True), name="static")
 
 # Integração das rotas
 app.include_router(usuario_router, prefix="/api")
